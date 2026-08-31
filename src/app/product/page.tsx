@@ -1,8 +1,10 @@
+import EcommerceProductCard from "@/components/shadcn-space/card/card-17";
 
 export default function Productpage() {
   return (
-    <div>
+    <>
         Product page
-    </div>
+       <EcommerceProductCard/>
+    </>
   )
 }

@@ -1,3 +1,4 @@
+import EcommerceProductCard from "@/components/shadcn-space/card/card-17";
 
 export default async function ProductDetailPage({
     params
@@ -8,6 +9,7 @@ export default async function ProductDetailPage({
   return (
     <div>
         <h1>Product Slug : {slug}</h1>
+ 
     </div>
   )
 }
