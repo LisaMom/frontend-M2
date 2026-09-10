@@ -6,16 +6,8 @@ import type { ControllerRenderProps } from "react-hook-form";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 
@@ -153,21 +145,19 @@ const ProductDetail1 = ({ className, id }: ProductDetail1Props) => {
 
   if (loading) {
     return (
-      <section className={cn("py-32", className)}>
-        <div className="container text-center text-muted-foreground">
-          Loading product…
-        </div>
-      </section>
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <p className="text-muted-foreground text-sm">Loading product details…</p>
+      </div>
     );
   }
 
   if (error || !singleProduct) {
     return (
-      <section className={cn("py-32", className)}>
-        <div className="container text-center text-destructive">
-          {error ?? "Product not found"}
-        </div>
-      </section>
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-2 text-center">
+        <p className="text-destructive font-semibold">Product not found</p>
+        <p className="text-muted-foreground text-sm">{error ?? "The requested product does not exist."}</p>
+      </div>
     );
   }
 
@@ -189,8 +179,8 @@ const ProductDetail1 = ({ className, id }: ProductDetail1Props) => {
   };
 
   return (
-    <section className={cn("py-32", className)}>
-      <div className="container">
+    <section className={cn("py-4", className)}>
+      <div className="w-full">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
           <div>
             <ProductImages images={images} />
@@ -267,40 +257,19 @@ const ProductInfo = ({ info }: ProductInfoProps) => {
 };
 
 const ProductImages = ({ images }: ProductImagesProps) => {
+  const mainImage = images[0];
+  if (!mainImage) return null;
+
   return (
-    <Carousel
-      opts={{
-        breakpoints: {
-          "(min-width: 768px)": {
-            active: false,
-          },
-        },
-      }}
-    >
-      <CarouselContent className="gap-4 md:m-0 md:grid md:grid-cols-3 xl:gap-5">
-        {images.map((img, index) => (
-          <CarouselItem
-            className="first:col-span-3 md:p-0"
-            key={`product-detail-1-image-${index}`}
-          >
-            <AspectRatio ratio={1} className="overflow-hidden rounded-lg">
-              <img
-                srcSet={img.srcset}
-                alt={img.alt}
-                width={img.width}
-                height={img.height}
-                sizes={img.sizes}
-                className="block size-full object-cover object-center"
-              />
-            </AspectRatio>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <div className="md:hidden">
-        <CarouselPrevious className="left-4" />
-        <CarouselNext className="right-4" />
+    <div className="w-full flex items-center justify-center p-8 bg-white dark:bg-gray-900/50 border rounded-2xl shadow-sm">
+      <div className="relative aspect-square w-full max-w-md flex items-center justify-center">
+        <img
+          src={mainImage.src}
+          alt={mainImage.alt}
+          className="max-h-full max-w-full object-contain drop-shadow-md transition-transform duration-300 hover:scale-105"
+        />
       </div>
-    </Carousel>
+    </div>
   );
 };
 

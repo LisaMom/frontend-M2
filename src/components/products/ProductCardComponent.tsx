@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Heart, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,28 +21,31 @@ const getDeliveryDate = () => {
 
 // productInterface
 export interface ProductInfer {
+  id?: number | string;
   image: string;
   title: string;
   description: string;
   price: number;
 }
 
-export default function EcommerceProductCard({ image, title, description, price }: ProductInfer) {
+export default function EcommerceProductCard({ id, image, title, description, price }: ProductInfer) {
   const [activeSize, setActiveSize] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [inBag, setInBag] = useState(false);
 
   return (
-    <div className="flex items-center justify-center p-8 w-full bg-background">
-      <Card className="w-80 rounded-2xl overflow-hidden p-0 gap-0  group/card">
+    <div className="flex items-center justify-center p-4 bg-background">
+      <Card className="w-80 rounded-2xl overflow-hidden p-0 gap-0 group/card shadow-sm hover:shadow-md transition-shadow">
 
         {/* ── Image zone ── */}
-        <div className="relative overflow-hidden h-80">
-          <img
-            src={image}
-            className="object-contain drop-shadow-2xl px-8 py-6 transition-transform duration-500 ease-out group-hover/card:scale-105"
-            alt={title}
-          />
+        <div className="relative overflow-hidden h-80 bg-gray-50 dark:bg-gray-900/40">
+          <Link href={id ? `/product/${id}` : "#"} className="block h-full w-full">
+            <img
+              src={image}
+              className="object-contain w-full h-full drop-shadow-md px-8 py-6 transition-transform duration-500 ease-out group-hover/card:scale-105"
+              alt={title}
+            />
+          </Link>
 
           {/* Discount badge — always visible */}
           <span className="absolute top-3 left-3 text-xs tracking-widest font-bold uppercase bg-foreground text-background px-2.5 py-1 rounded-sm select-none">
@@ -51,7 +54,11 @@ export default function EcommerceProductCard({ image, title, description, price 
 
           {/* Wishlist — always visible top-right */}
           <button
-            onClick={() => setIsWishlisted(!isWishlisted)}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsWishlisted(!isWishlisted);
+            }}
             title="Wishlist"
             className={cn(
               "absolute top-3 right-3 h-8 w-8 rounded-full border shadow-sm flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95",
@@ -73,11 +80,13 @@ export default function EcommerceProductCard({ image, title, description, price 
         <CardContent className="px-4 pt-4 pb-4 space-y-1.5">
           {/* Brand + name */}
           <div className="min-w-0">
-            <h3 className="text-base font-bold text-foreground truncate">
-             {title}
-            </h3>
+            <Link href={id ? `/product/${id}` : "#"}>
+              <h3 className="text-base font-bold text-foreground truncate hover:text-primary transition-colors">
+                {title}
+              </h3>
+            </Link>
             <p className="text-sm text-muted-foreground truncate">
-             {description}
+              {description}
             </p>
           </div>
 
@@ -100,6 +109,7 @@ export default function EcommerceProductCard({ image, title, description, price 
             {sizes.map((s, i) => (
               <button
                 key={s}
+                type="button"
                 onClick={() => setActiveSize(i)}
                 className={cn(
                   "flex-1 h-7 rounded-lg text-sm font-medium border transition-all duration-150",
@@ -118,7 +128,11 @@ export default function EcommerceProductCard({ image, title, description, price 
         <CardFooter className="px-4 pb-6 gap-2 bg-transparent border-t-0">
           {/* Bag toggle icon button */}
           <button
-            onClick={() => setInBag(!inBag)}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setInBag(!inBag);
+            }}
             title={inBag ? "Remove from bag" : "Add to bag"}
             className={cn(
               "h-12 w-12 shrink-0 rounded-xl border flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95",
@@ -130,13 +144,13 @@ export default function EcommerceProductCard({ image, title, description, price 
             <ShoppingBag className="w-5 h-5" />
           </button>
 
-          {/* Buy Now — button-17 ripple style */}
-          <Button className="relative overflow-hidden group/btn flex-1 h-12 rounded-xl font-semibold text-base cursor-pointer border border-primary transition-all flex items-center justify-center gap-2">
-            <span className="absolute left-1/2 -translate-x-1/2 top-full -translate-y-1/2 w-8 h-8 bg-white dark:bg-gray-950 rounded-full scale-0 transition-transform duration-700 ease-in-out group-hover/btn:scale-[20]" />
-            <span className="relative z-10 transition-colors duration-500 group-hover/btn:text-gray-950 dark:group-hover/btn:text-white">
-              Buy Now
-            </span>
-          </Button>
+          {/* View Details button */}
+          <Link
+            href={id ? `/product/${id}` : "#"}
+            className="flex-1 h-12 rounded-xl font-semibold text-base border border-primary bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+          >
+            View Details
+          </Link>
         </CardFooter>
 
       </Card>

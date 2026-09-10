@@ -1,103 +1,91 @@
 
-export function FooterComponent(){
-    return(
-        <footer className="px-3 pt-4 lg:px-9 border-t-2 bg-gray-50">
-  <div className="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-    <div className="sm:col-span-2">
-      <a href="#" className="inline-flex items-center">
-        <img
-          src="https://mcqmate.com/public/images/logos/60x60.png"
-          alt="logo"
-          className="h-8 w-8"
-        />
-        <span className="ml-2 text-xl font-bold tracking-wide text-gray-800">
-          Company Name
-        </span>
-      </a>
-      <div className="mt-6 lg:max-w-xl">
-        <p className="text-sm text-gray-800">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi felis
-          mi, faucibus dignissim lorem id, imperdiet interdum mauris. Vestibulum
-          ultrices sed libero non porta. Vivamus malesuada urna eu nibh
-          malesuada, non finibus massa laoreet. Nunc nisi velit, feugiat a
-          semper quis, pulvinar id libero. Vivamus mi diam, consectetur non orci
-          ut, tincidunt pretium justo. In vehicula porta molestie. Suspendisse
-          potenti.
-        </p>
-      </div>
-    </div>
-    <div className="flex flex-col gap-2 text-sm">
-      <p className="text-base font-bold tracking-wide text-gray-900">
-        Popular Courses
-      </p>
-      <a href="#">UPSC - Union Public Service Commission</a>
-      <a href="#">General Knowledge</a>
-      <a href="#">MBA</a>
-      <p className="text-base font-bold tracking-wide text-gray-900">
-        Popular Topics
-      </p>
-      <a href="#">Human Resource Management</a>
-      <a href="#">Operations Management</a>
-      <a href="#">Marketing Management</a>
-    </div>
-    <div>
-      <p className="text-base font-bold tracking-wide text-gray-900">
-        COMPANY IS ALSO AVAILABLE ON
-      </p>
-      <div className="flex items-center gap-1 px-2">
-        <a href="#" className="w-full min-w-xl">
-          <img
-            src="https://mcqmate.com/public/images/icons/playstore.svg"
-            alt="Playstore Button"
-            className="h-10"
-          />
-        </a>
-        <a
-          className="w-full min-w-xl"
-          href="https://www.youtube.com/channel/UCo8tEi6SrGFP8XG9O0ljFgA"
-        >
-          <img
-            src="https://mcqmate.com/public/images/icons/youtube.svg"
-            alt="Youtube Button"
-            className="h-28"
-          />
-        </a>
-      </div>
-      <p className="text-base font-bold tracking-wide text-gray-900">
-        Contacts
-      </p>
-      <div className="flex">
-        <p className="mr-1 text-gray-800">Email:</p>
-        <a href="#" title="send email">
-          admin@company.com
-        </a>
-      </div>
-    </div>
-  </div>
-  <div className="flex flex-col-reverse justify-between pt-5 pb-10 border-t lg:flex-row">
-    <p className="text-sm text-gray-600">
-      © Copyright 2023 Company. All rights reserved.
-    </p>
-    <ul className="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
-      <li>
-        <a
-          href="#"
-          className="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400"
-        >
-          Privacy &amp; Cookies Policy
-        </a>
-      </li>
-      <li>
-        <a
-          href="#"
-          className="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400"
-        >
-          Disclaimer
-        </a>
-      </li>
-    </ul>
-  </div>
-</footer>
+import Link from "next/link"
 
-    )
+export function FooterComponent() {
+  return (
+    <footer className="border-t border-border bg-muted/30 pt-12 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+          {/* Brand & Description */}
+          <div className="md:col-span-2 space-y-4">
+            <Link href="/" className="inline-flex items-center gap-2 font-bold text-xl tracking-tight">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black text-sm">
+                TT
+              </span>
+              <span>Tos Tinh</span>
+            </Link>
+            <p className="text-sm text-muted-foreground max-w-sm">
+              Your one-stop destination for quality products with seamless shopping, verified customer ratings, and responsive customer care.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold tracking-wider uppercase text-foreground">
+              Navigation
+            </h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link href="/" className="hover:text-foreground transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/product" className="hover:text-foreground transition-colors">
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link href="/data-tables" className="hover:text-foreground transition-colors">
+                  Data Table
+                </Link>
+              </li>
+              <li>
+                <Link href="/categories" className="hover:text-foreground transition-colors">
+                  Categories
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Customer Care & Contact */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold tracking-wider uppercase text-foreground">
+              Account & Support
+            </h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link href="/auth/login" className="hover:text-foreground transition-colors">
+                  Sign In
+                </Link>
+              </li>
+              <li>
+                <Link href="/auth/register" className="hover:text-foreground transition-colors">
+                  Register Account
+                </Link>
+              </li>
+              <li>
+                <span className="text-sm text-muted-foreground">
+                  Email: support@tostinh.com
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom copyright & policies */}
+        <div className="border-t border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+          <p>© Copyright {new Date().getFullYear()} Tos Tinh. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <Link href="#" className="hover:text-foreground transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="hover:text-foreground transition-colors">
+              Terms of Service
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
 }

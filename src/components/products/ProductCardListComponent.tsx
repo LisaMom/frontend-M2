@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import EcommerceProductCard from "./ProductCardComponent"; 
-import { Link } from "lucide-react";
+import EcommerceProductCard from "./ProductCardComponent";
 
 interface Product {
   id: number;
@@ -35,22 +34,35 @@ export default function ProductCardListComponent() {
     fetchProducts();
   }, []);
 
-  if (loading) return <div className="p-8 text-center">Loading products…</div>;
-  if (error) return <div className="p-8 text-center text-red-500">Error: {error}</div>;
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <p className="text-muted-foreground text-sm">Loading products…</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-2 p-8 text-center">
+        <p className="text-destructive font-semibold">Failed to load products</p>
+        <p className="text-muted-foreground text-sm">{error}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="Container grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 flex flex-wrap justify-center gap-4 p-8">
+    <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
       {products.map(({ id, image, title, description, price }) => (
-       <Link key={id} href={`product/${id}`}>
-            <EcommerceProductCard
-                key={id}
-                image={image}
-                title={title}
-                description={description}
-                price={price}
-            />
-       </Link>
-
+        <EcommerceProductCard
+          key={id}
+          id={id}
+          image={image}
+          title={title}
+          description={description}
+          price={price}
+        />
       ))}
     </div>
   );

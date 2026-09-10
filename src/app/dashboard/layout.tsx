@@ -4,8 +4,8 @@ export default function DashboardLayout({
   children: React.ReactNode; 
 }) {
   return (
-    <section className="flex min-h-screen">
-      
+    <section className="pt-24 pb-16 min-h-screen">
+      {children}
     </section>
   );
 }

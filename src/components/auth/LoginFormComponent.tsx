@@ -3,46 +3,47 @@
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
-import { toast, Toaster } from "sonner"
+import { toast } from "sonner"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { redirect } from "next/navigation"
 
-
-// using zod validation
+// Zod validation schema
 const formSchema = z.object({
   email: z
     .string()
-    .email("Required @ for email")
-   ,
+    .min(1, { message: "Email is required" })
+    .email({ message: "Please enter a valid email address" }),
   password: z
-  .string()
-  .min(8, { message: "Password must be at least 8 characters long" })
-  .max(20, { message: "Password cannot exceed 20 characters" })
-  .regex(/[A-Z]/, { message: "Must contain at least one uppercase letter" })
-  .regex(/[a-z]/, { message: "Must contain at least one lowercase letter" })
-  .regex(/[0-9]/, { message: "Must contain at least one number" })
-  .regex(/[^A-Za-z0-9]/, { message: "Must contain at least one special character" })
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
 })
 
+type FormValues = z.infer<typeof formSchema>
+
 export function LoginFormComponent() {
-  // using react hook form
-  const form = useForm<z.infer<typeof formSchema>>({
+  const router = useRouter()
+  const [loading, setLoading] = React.useState(false)
+
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
@@ -50,55 +51,69 @@ export function LoginFormComponent() {
     },
   })
 
-  // logic with form 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-      const postdata = async () =>{
-        const res = await fetch('https://sombobaeb.cheat.casa/auth/login',{
-          method:'POST',
-          headers: {
-            'Content-Type': "application/json"
-          },
-          body:JSON.stringify(data)
-        })
-        if(res.ok){
-          toast.success("Login Successfully!")
-          setTimeout(()=> {
-            redirect('/product')
-          },2000)
-        }else{
-          toast.error("Incorrect password or email");
+  async function onSubmit(data: FormValues) {
+    try {
+      setLoading(true)
+      const res = await fetch("https://sombobaeb.cheat.casa/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      const resData = await res.json().catch(() => null)
+
+      if (res.ok) {
+        if (resData?.access_token) {
+          localStorage.setItem("access_token", resData.access_token)
         }
+        if (resData?.user) {
+          localStorage.setItem("user", JSON.stringify(resData.user))
+        }
+        toast.success("Login successful! Redirecting to products...")
+        setTimeout(() => {
+          router.push("/product")
+        }, 1200)
+      } else {
+        const errorMsg =
+          typeof resData?.detail === "string"
+            ? resData.detail
+            : "Incorrect email or password."
+        toast.error(errorMsg)
       }
-      postdata();
+    } catch {
+      toast.error("Network error. Please try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <Card className="w-full sm:max-w-md">
-      <Toaster/>
       <CardHeader>
         <CardTitle>Login</CardTitle>
-        {/* <CardDescription>
-          Help us improve by reporting bugs you encounter.
-        </CardDescription> */}
+        <CardDescription>
+          Enter your credentials to access your account
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="form-login" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
               name="email"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-title">
-                    Email
-                  </FieldLabel>
+                  <FieldLabel htmlFor="login-email">Email</FieldLabel>
                   <Input
                     {...field}
-                    type="email" //input as email
-                    id="form-rhf-demo-title"
+                    type="email"
+                    id="login-email"
                     aria-invalid={fieldState.invalid}
                     placeholder="koko@gmail.com"
-                    autoComplete="off"
+                    autoComplete="email"
+                    disabled={loading}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -111,17 +126,16 @@ export function LoginFormComponent() {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-description">
-                    Password
-                  </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-demo-description"
-                      placeholder="QWER!@#$$"
-                      type="password" //add input as password
-                      // className="min-h-24 resize-none"
-                      aria-invalid={fieldState.invalid}
-                    />
+                  <FieldLabel htmlFor="login-password">Password</FieldLabel>
+                  <Input
+                    {...field}
+                    id="login-password"
+                    placeholder="••••••••"
+                    type="password"
+                    aria-invalid={fieldState.invalid}
+                    autoComplete="current-password"
+                    disabled={loading}
+                  />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -133,14 +147,22 @@ export function LoginFormComponent() {
       </CardContent>
 
       <CardFooter>
-        <Field orientation="horizontal">
-          {/* <Button type="button" variant="outline" onClick={() => form.reset()}>
-            Reset
-          </Button> */}
-          <Button type="submit" form="form-rhf-demo">
-            Login
-          </Button>
-        </Field>
+        <FieldGroup className="w-full">
+          <Field>
+            <Button type="submit" form="form-login" disabled={loading} className="w-full">
+              {loading ? "Logging in..." : "Login"}
+            </Button>
+            <FieldDescription className="px-6 text-center">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/auth/register"
+                className="font-medium text-primary underline underline-offset-4"
+              >
+                Sign up
+              </Link>
+            </FieldDescription>
+          </Field>
+        </FieldGroup>
       </CardFooter>
     </Card>
   )
