@@ -30,25 +30,48 @@ interface FakeStoreItem {
   }
 }
 
+// async function getData(): Promise<Product[]> {
+//   const res = await fetch("https://fakestoreapi.com/products", {
+//     cache: "no-store",
+//     signal: AbortSignal.timeout(8000),
+//   });
+//   if (!res.ok) {
+//     throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
+//   }
+//   const items: FakeStoreItem[] = await res.json();
+//   return items.map((item) => ({
+//     id: String(item.id),
+//     image: item.image,
+//     title: item.title,
+//     price: item.price,
+//     category: item.category,
+//     rate: item.rating?.rate ?? 0,
+//   }));
+// }
 async function getData(): Promise<Product[]> {
-  const res = await fetch("https://fakestoreapi.com/products", {
-    cache: "no-store",
-    signal: AbortSignal.timeout(8000),
-  });
-  if (!res.ok) {
-    throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
+  try {
+    const res = await fetch("https://fakestoreapi.com/products", {
+      cache: "no-store",
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) {
+      console.error(`Failed to fetch products: ${res.status} ${res.statusText}`);
+      return [];
+    }
+    const items: FakeStoreItem[] = await res.json();
+    return items.map((item) => ({
+      id: String(item.id),
+      image: item.image,
+      title: item.title,
+      price: item.price,
+      category: item.category,
+      rate: item.rating?.rate ?? 0,
+    }));
+  } catch (error) {
+    console.error("Error fetching data for table:", error);
+    return [];
   }
-  const items: FakeStoreItem[] = await res.json();
-  return items.map((item) => ({
-    id: String(item.id),
-    image: item.image,
-    title: item.title,
-    price: item.price,
-    category: item.category,
-    rate: item.rating?.rate ?? 0,
-  }));
 }
-
 export default async function ProductDataTable() {
   const data = await getData()
 

@@ -2,6 +2,12 @@
 import { Metadata } from "next";
 import ProductCardListComponent from "@/components/products/ProductCardListComponent";
 
+const res = await fetch("https://fakestoreapi.com/products", {
+  headers: {
+    "User-Agent": "Mozilla/5.0 (compatible; MyApp/1.0)",
+  },
+  cache: "no-store",
+});
 export const metadata: Metadata = {
   title: "Products", // This hooks cleanly into layout %s templates
   description: "Tos Tinh is a modern platform and modern vibe for all customers.",
