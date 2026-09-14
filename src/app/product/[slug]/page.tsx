@@ -16,17 +16,22 @@ interface Product {
 
 async function getProduct(id: string): Promise<Product | null> {
   try {
-    const res = await fetch(`https://fakestoreapi.com/products/${id}`, {
-      next: { revalidate: 3600 }, // cache for 1hr, optional
+    const res = await fetch(`https://dummyjson.com/products/${id}`, {
+      cache: "no-store",
     });
     if (!res.ok) return null;
-    return res.json();
+    const item = await res.json();
+    return {
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      image: item.thumbnail,
+    };
   } catch {
     return null;
   }
 }
 
-// 1. Dynamic Metadata Generation
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
@@ -34,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = product?.title ?? "Product Not Found";
 
   return {
-    title, // plugs into your layout template: "Blue T Shirt | Tos Tinh"
+    title,
     keywords: product ? `T-shirts for women, ${title}` : undefined,
     description: product
       ? `Buy ${title} on Tos Tinh. Explore our collection of top-rated items with competitive pricing.`

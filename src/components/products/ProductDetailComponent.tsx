@@ -82,7 +82,7 @@ interface ProductFormProps {
 
 const MAX_STARS = 5;
 
-// Static hinges (Fake Store API has no size/color variants, so we keep a
+// Static hinges (DummyJSON has no size/color variants, so we keep a
 // mock size selector for demo purposes; swap or remove if not needed)
 const DEFAULT_HINGES = {
   size: {
@@ -99,17 +99,16 @@ const DEFAULT_HINGES = {
   },
 } as Record<FieldName, Hinges>;
 
-interface FakeStoreProduct {
+interface DummyJsonProduct {
   id: number;
   title: string;
   price: number;
   description: string;
   category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
+  thumbnail: string;
+  images: string[];
+  rating: number;
+  reviews?: Array<{ rating: number }>;
 }
 
 interface ProductDetail1Props {
@@ -118,7 +117,7 @@ interface ProductDetail1Props {
 }
 
 const ProductDetail1 = ({ className, id }: ProductDetail1Props) => {
-  const [singleProduct, setSingleProduct] = useState<FakeStoreProduct | null>(null);
+  const [singleProduct, setSingleProduct] = useState<DummyJsonProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -129,9 +128,9 @@ const ProductDetail1 = ({ className, id }: ProductDetail1Props) => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+        const res = await fetch(`https://dummyjson.com/products/${id}`);
         if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-        const data: FakeStoreProduct = await res.json();
+        const data: DummyJsonProduct = await res.json();
         setSingleProduct(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Something went wrong");
@@ -161,11 +160,11 @@ const ProductDetail1 = ({ className, id }: ProductDetail1Props) => {
     );
   }
 
-  // Map the Fake Store API shape into what the render below expects
+  // Map the DummyJSON shape into what the render below expects
   const images = [
     {
-      srcset: singleProduct.image,
-      src: singleProduct.image,
+      srcset: singleProduct.thumbnail,
+      src: singleProduct.thumbnail,
       alt: singleProduct.title,
       width: 800,
       height: 800,
@@ -174,8 +173,8 @@ const ProductDetail1 = ({ className, id }: ProductDetail1Props) => {
   ];
 
   const reviews = {
-    rate: singleProduct.rating?.rate ?? 0,
-    totalReviewers: singleProduct.rating?.count?.toString() ?? "0",
+    rate: singleProduct.rating ?? 0,
+    totalReviewers: singleProduct.reviews?.length?.toString() ?? "0",
   };
 
   return (
