@@ -42,12 +42,13 @@ export function NavbarComponent() {
     <header className="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-border bg-background/85 py-2.5 px-4 shadow-sm backdrop-blur-md md:top-4 md:rounded-2xl lg:max-w-screen-lg">
       <div className="flex items-center justify-between gap-4">
         {/* Brand logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg tracking-tight">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black text-sm">
-            TT
-          </span>
-          <span className="hidden sm:inline-block">Tos Tinh</span>
+        <Link href="/" className="flex items-center gap-2 font-bold text-lg tracking-tight"> 
+       <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black text-sm"> 
+          <img className="rounded-lg" src="/tos-tinh.jpeg" alt="Tos Tinh Logo" /> 
+        </span> 
+        <span className="hidden sm:inline-block">Tos Tinh</span> 
         </Link>
+
 
         {/* Navigation Links */}
         <nav className="flex items-center gap-1 sm:gap-2">

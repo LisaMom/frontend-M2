@@ -23,8 +23,17 @@ const notoKhmer = Noto_Sans_Khmer({
 });
 
 export const metadata: Metadata = {
-  title: "Tos Tinh - Modern Ecommerce App",
-  description: "Next.js ecommerce application with authentication and product management",
+  title: {
+    template: '%s | Tos Tinh',
+    default: 'Tos Tinh'
+  },
+  keywords: 'T-Shirts for women, jewelery, E-commerce, men clothing, women clothing',
+  description: "Tos Tinh is a modern platform and modern vibe for all costumers.",
+  openGraph: {
+    title: "Tos Tinh - M2",
+    description: "AI Overview Tos Tinh refers to small retail and online lifestyle or fashion businesses in Phnom Penh, such as Tos Tinh 356 Store and Tos tinh-21, offering modern clothing and products through social media platforms.",
+    images: ['/thumbnail.png']
+  }
 };
 
 // 2. Define proper TypeScript layout props

@@ -1,7 +1,21 @@
+import { Metadata } from "next";
 import { columns, Product } from "./columns"
 import { DataTable } from "./data-table"
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Tos Tinh',
+    default: 'Data-Table'
+  },
+  keywords: "T-shirts for women",
+  description: "Tos Tinh is a modern platform and modern vibe for all costumers.",
+  openGraph: {
+    title: "Tos Tinh - M2",
+    description: "AI Overview Tos Tinh refers to small retail and online lifestyle or fashion businesses in Phnom Penh, such as Tos Tinh 356 Store and Tos tinh-21, offering modern clothing and products through social media platforms.",
+    images: ['/thumbnail.png']
+  }
+};
 
 interface FakeStoreItem {
   id: number

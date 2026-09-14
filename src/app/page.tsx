@@ -1,8 +1,22 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingBag, TableProperties } from "lucide-react";
 import ProductCardListComponent from "@/components/products/ProductCardListComponent";
 
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Tos Tinh',
+    default: 'Home'
+  },
+  keywords: "T-shirts for women",
+  description: "Tos Tinh is a modern platform and modern vibe for all costumers.",
+  openGraph: {
+    title: "Tos Tinh - M2",
+    description: "AI Overview Tos Tinh refers to small retail and online lifestyle or fashion businesses in Phnom Penh, such as Tos Tinh 356 Store and Tos tinh-21, offering modern clothing and products through social media platforms.",
+    images: ['/thumbnail.png']
+  }
+};
 export default function Home() {
   return (
     <div className="pt-24 pb-16">
