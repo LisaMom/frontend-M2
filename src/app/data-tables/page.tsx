@@ -16,60 +16,38 @@ export const metadata: Metadata = {
     images: ['/thumbnail.png']
   }
 };
-
-interface FakeStoreItem {
+interface DummyProductItem {
   id: number
   title: string
   price: number
   description: string
   category: string
-  image: string
-  rating?: {
-    rate: number
-    count: number
-  }
+  thumbnail: string
+  rating: number
 }
 
-// async function getData(): Promise<Product[]> {
-//   const res = await fetch("https://fakestoreapi.com/products", {
-//     cache: "no-store",
-//     signal: AbortSignal.timeout(8000),
-//   });
-//   if (!res.ok) {
-//     throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
-//   }
-//   const items: FakeStoreItem[] = await res.json();
-//   return items.map((item) => ({
-//     id: String(item.id),
-//     image: item.image,
-//     title: item.title,
-//     price: item.price,
-//     category: item.category,
-//     rate: item.rating?.rate ?? 0,
-//   }));
-// }
 async function getData(): Promise<Product[]> {
   try {
-    const res = await fetch("https://fakestoreapi.com/products", {
+    const res = await fetch("https://dummyjson.com/products?limit=100", {
       cache: "no-store",
       signal: AbortSignal.timeout(8000),
-    });
+    })
     if (!res.ok) {
-      console.error(`Failed to fetch products: ${res.status} ${res.statusText}`);
-      return [];
+      console.error(`Failed to fetch products: ${res.status} ${res.statusText}`)
+      return []
     }
-    const items: FakeStoreItem[] = await res.json();
-    return items.map((item) => ({
+    const data: { products: DummyProductItem[] } = await res.json()
+    return data.products.map((item) => ({
       id: String(item.id),
-      image: item.image,
+      image: item.thumbnail,
       title: item.title,
       price: item.price,
       category: item.category,
-      rate: item.rating?.rate ?? 0,
-    }));
+      rate: item.rating ?? 0,
+    }))
   } catch (error) {
-    console.error("Error fetching data for table:", error);
-    return [];
+    console.error("Error fetching data for table:", error)
+    return []
   }
 }
 export default async function ProductDataTable() {
