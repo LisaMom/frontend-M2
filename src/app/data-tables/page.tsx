@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "Tos Tinh is a modern platform and modern vibe for all costumers.",
   openGraph: {
     title: "Tos Tinh - M2",
-    description: "AI Overview Tos Tinh refers to small retail and online lifestyle or fashion businesses in Phnom Penh, such as Tos Tinh 356 Store and Tos tinh-21, offering modern clothing and products through social media platforms.",
+    description: "Tos Tinh refers to small retail and online lifestyle or fashion businesses in Phnom Penh, such as Tos Tinh 356 Store and Tos tinh-21, offering modern clothing and products through social media platforms.",
     images: ['/thumbnail.png']
   }
 };
@@ -31,26 +31,22 @@ interface FakeStoreItem {
 }
 
 async function getData(): Promise<Product[]> {
-  try {
-    const res = await fetch("https://fakestoreapi.com/products", {
-      cache: "no-store",
-    })
-    if (!res.ok) {
-      throw new Error(`Failed to fetch products: ${res.status}`)
-    }
-    const items: FakeStoreItem[] = await res.json()
-    return items.map((item) => ({
-      id: String(item.id),
-      image: item.image,
-      title: item.title,
-      price: item.price,
-      category: item.category,
-      rate: item.rating?.rate ?? 0,
-    }))
-  } catch (error) {
-    console.error("Error fetching data for table:", error)
-    return []
+  const res = await fetch("https://fakestoreapi.com/products", {
+    cache: "no-store",
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
   }
+  const items: FakeStoreItem[] = await res.json();
+  return items.map((item) => ({
+    id: String(item.id),
+    image: item.image,
+    title: item.title,
+    price: item.price,
+    category: item.category,
+    rate: item.rating?.rate ?? 0,
+  }));
 }
 
 export default async function ProductDataTable() {

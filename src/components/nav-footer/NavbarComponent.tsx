@@ -35,7 +35,6 @@ export function NavbarComponent() {
     { href: "/", label: "Home" },
     { href: "/product", label: "Products" },
     { href: "/data-tables", label: "Data Table" },
-    { href: "/categories", label: "Categories" },
   ]
 
   return (
@@ -44,7 +43,7 @@ export function NavbarComponent() {
         {/* Brand logo */}
         <Link href="/" className="flex items-center gap-2 font-bold text-lg tracking-tight"> 
        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black text-sm"> 
-          <img className="rounded-lg" src="/tos-tinh.jpeg" alt="Tos Tinh Logo" /> 
+          <img className="rounded-lg" src="/tos-tinh.jpg" alt="Tos Tinh Logo" /> 
         </span> 
         <span className="hidden sm:inline-block">Tos Tinh</span> 
         </Link>

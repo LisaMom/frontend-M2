@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   description: "Tos Tinh is a modern platform and modern vibe for all costumers.",
   openGraph: {
     title: "Tos Tinh - M2",
-    description: "AI Overview Tos Tinh refers to small retail and online lifestyle or fashion businesses in Phnom Penh, such as Tos Tinh 356 Store and Tos tinh-21, offering modern clothing and products through social media platforms.",
+    description: "Tos Tinh refers to small retail and online lifestyle or fashion businesses in Phnom Penh, such as Tos Tinh 356 Store and Tos tinh-21, offering modern clothing and products through social media platforms.",
     images: ['/thumbnail.png']
   }
 };

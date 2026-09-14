@@ -10,7 +10,7 @@ export function FooterComponent() {
           <div className="md:col-span-2 space-y-4">
             <Link href="/" className="inline-flex items-center gap-2 font-bold text-xl tracking-tight">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black text-sm">
-                <img className="rounded-lg" src="/tos-tinh.jpeg" alt="" />
+                <img className="rounded-lg" src="/tos-tinh.jpg" alt="" />
               </span>
               <span>Tos Tinh</span>
             </Link>

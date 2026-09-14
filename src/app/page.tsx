@@ -3,21 +3,25 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingBag, TableProperties } from "lucide-react";
 import ProductCardListComponent from "@/components/products/ProductCardListComponent";
-
+interface Props {
+  params: Promise<{ productName: string }>;
+}
 export const metadata: Metadata = {
   title: {
     template: '%s | Tos Tinh',
-    default: 'Home'
+    default: 'Tos Tinh'
   },
   keywords: "T-shirts for women",
   description: "Tos Tinh is a modern platform and modern vibe for all costumers.",
   openGraph: {
     title: "Tos Tinh - M2",
-    description: "AI Overview Tos Tinh refers to small retail and online lifestyle or fashion businesses in Phnom Penh, such as Tos Tinh 356 Store and Tos tinh-21, offering modern clothing and products through social media platforms.",
+    description: "Tos Tinh refers to small retail and online lifestyle or fashion businesses in Phnom Penh, such as Tos Tinh 356 Store and Tos tinh-21, offering modern clothing and products through social media platforms.",
     images: ['/thumbnail.png']
   }
 };
-export default function Home() {
+export default async function Home({ params }: Props) {
+   const resolvedParams = await params;
+  const decodedName = decodeURIComponent(resolvedParams?.productName || "");
   return (
     <div className="pt-24 pb-16">
       {/* Hero Section */}
@@ -59,7 +63,7 @@ export default function Home() {
             Click on any product to view its complete specifications, ratings, and gallery.
           </p>
         </div>
-        <ProductCardListComponent />
+       <ProductCardListComponent productName={decodedName} />
       </section>
     </div>
   );
